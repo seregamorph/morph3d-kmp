@@ -1,29 +1,39 @@
-This is a Kotlin Multiplatform project targeting Desktop (JVM).
+# Morph3D KMP
 
-* [/shared](./shared/src) is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-    - [commonMain](./shared/src/commonMain/kotlin) is for code that’s common for all targets.
-    - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-      For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-      the [iosMain](./shared/src/iosMain/kotlin) folder would be the right place for such calls.
-      Similarly, if you want to edit the Desktop (JVM) specific part, the [jvmMain](./shared/src/jvmMain/kotlin)
-      folder is the appropriate location.
+A Kotlin Multiplatform (Compose) remake of **MORPH3D**, a DOS demo written in x86 assembler
+by Courtney S. Sharp in November 1993. The original sources are in [dos/](./dos), see
+[dos/screenshots](./dos/screenshots) for how it looked in DOSBox.
 
-### Running the apps
+A figure of 200 colored dots rotates and roams in a black "room". The dots flow along the figure
+leaving fading trails, the figure periodically morphs into another one (lissajous curves, torus,
+sphere, cylinder, christmas tree, box, fountain, ...) while its color set cross-fades.
 
-Use the run configurations provided by the run widget in your IDE's toolbar. You can also use these commands and
-options:
+The first supported platform is macOS (desktop JVM).
 
-- Desktop app:
-    - Hot reload: `./gradlew :desktopApp:hotRun --auto`
-    - Standard run: `./gradlew :desktopApp:run`
+## Project structure
 
-### Running tests
+* [shared](./shared/src/commonMain/kotlin/com/github/seregamorph/morph3d_kmp) - platform independent code:
+    - `Figures.kt`, `Palettes.kt` - figure generators and color sets ported from `MORPHSUB.ASM` / `3DTRANS.ASM`
+    - `Morph3DEngine.kt` - the simulation: morphing, dot motion, rotation, perspective projection, trails
+    - `Morph3DScene.kt` - Compose canvas rendering
+* [desktopApp](./desktopApp/src/main/kotlin/com/github/seregamorph/morph3d_kmp) - desktop entry point
 
-Use the run button in your IDE's editor gutter, or run tests using Gradle tasks:
+## Differences from the original
 
-- Desktop tests: `./gradlew :shared:jvmTest`
+* Resolution independent: the original 320x200 screen space is scaled uniformly to the window/display,
+  dots are drawn as anti-aliased circles.
+* The animation is time based (60 original frames per second), independent of the display refresh rate.
+* The 4 discrete depth shades of a color set are blended smoothly.
+* All 9 color sets are used, the next figure/color set is never the same as the current one.
 
----
+## Running
 
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)…
+- Full screen, like a screen saver (exits on any key, mouse click or mouse move):
+  `./gradlew :desktopApp:run`
+- In a window (exits on Esc):
+  `./gradlew :desktopApp:run --args="--window"`
+- Build a macOS disk image: `./gradlew :desktopApp:packageDmg`
+
+## Running tests
+
+`./gradlew :shared:jvmTest`

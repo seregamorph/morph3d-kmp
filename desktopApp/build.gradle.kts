@@ -11,8 +11,6 @@ dependencies {
 
     implementation(compose.desktop.currentOs)
     implementation(libs.kotlinx.coroutinesSwing)
-
-    implementation(libs.compose.uiToolingPreview)
 }
 
 compose.desktop {
@@ -20,9 +18,12 @@ compose.desktop {
         mainClass = "com.github.seregamorph.morph3d_kmp.MainKt"
 
         nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "com.github.seregamorph.morph3d_kmp"
+            targetFormats(TargetFormat.Dmg)
+            packageName = "Morph3D"
             packageVersion = "1.0.0"
+            macOS {
+                bundleID = "com.github.seregamorph.morph3d"
+            }
         }
     }
 }
