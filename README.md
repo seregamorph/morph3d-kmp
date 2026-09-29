@@ -8,7 +8,7 @@ A figure of 200 colored dots rotates and roams in a black "room". The dots flow 
 leaving fading trails, the figure periodically morphs into another one (lissajous curves, torus,
 sphere, cylinder, christmas tree, box, fountain, ...) while its color set cross-fades.
 
-The first supported platform is macOS (desktop JVM).
+Supported platforms: macOS (desktop JVM), iPhone and iPad (a universal iOS app).
 
 ## Project structure
 
@@ -17,6 +17,8 @@ The first supported platform is macOS (desktop JVM).
     - `Morph3DEngine.kt` - the simulation: morphing, dot motion, rotation, perspective projection, trails
     - `Morph3DScene.kt` - Compose canvas rendering
 * [desktopApp](./desktopApp/src/main/kotlin/com/github/seregamorph/morph3d_kmp) - desktop entry point
+* [iosApp](./iosApp) - Xcode project of the iOS app for iPhone and iPad, it embeds the `Shared` framework
+  built from [shared/src/iosMain](./shared/src/iosMain/kotlin/com/github/seregamorph/morph3d_kmp)
 
 ## Differences from the original
 
@@ -33,6 +35,14 @@ The first supported platform is macOS (desktop JVM).
 - In a window (exits on Esc):
   `./gradlew :desktopApp:run --args="--window"`
 - Build a macOS disk image: `./gradlew :desktopApp:packageDmg`
+- iPhone / iPad: open [iosApp/iosApp.xcodeproj](./iosApp/iosApp.xcodeproj) in Xcode, pick an iPhone or iPad
+  simulator (or a device, after selecting a development team in Signing & Capabilities) and run.
+  The Kotlin framework is built by Gradle from an Xcode build phase. From the command line:
+  ```
+  xcodebuild -project iosApp/iosApp.xcodeproj -scheme iosApp -destination 'platform=iOS Simulator,name=iPhone 17' build
+  xcodebuild -project iosApp/iosApp.xcodeproj -scheme iosApp -destination 'platform=iOS Simulator,name=iPad Pro 13-inch (M5)' build
+  ```
+  The app runs full screen with the status bar hidden and keeps the display awake.
 
 ## Running tests
 

@@ -1,19 +1,50 @@
-*.iml
-.kotlin
+# Gradle / Kotlin
 .gradle
+.kotlin
 **/build/
-xcuserdata
 !src/**/build/
+!gradle/wrapper/gradle-wrapper.jar
 local.properties
+*.hprof
+
+# IDEs
 .idea
-.DS_Store
+*.iml
+*.ipr
+*.iws
+.fleet
+.vscode
+
+# Android (for future targets)
 captures
 .externalNativeBuild
 .cxx
+
+# Xcode
+xcuserdata
+*.xcuserstate
 *.xcodeproj/*
 !*.xcodeproj/project.pbxproj
 !*.xcodeproj/xcshareddata/
 !*.xcodeproj/project.xcworkspace/
 !*.xcworkspace/contents.xcworkspacedata
 **/xcshareddata/WorkspaceSettings.xcsettings
+DerivedData/
+*.hmap
+*.ipa
+*.dSYM
+*.dSYM.zip
+*.xcarchive
+
+# macOS
+.DS_Store
+._*
+
+# Editors / misc
+*.swp
+*~
+*.log
 node_modules/
+
+# Claude Code local settings
+.claude/settings.local.json
