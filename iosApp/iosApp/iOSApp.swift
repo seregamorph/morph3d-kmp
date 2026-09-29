@@ -4,10 +4,7 @@ import Shared
 
 @main
 struct iOSApp: App {
-    init() {
-        // it's a screen saver, don't let the display dim and lock
-        UIApplication.shared.isIdleTimerDisabled = true
-    }
+    @Environment(\.scenePhase) private var scenePhase
 
     var body: some Scene {
         WindowGroup {
@@ -15,6 +12,14 @@ struct iOSApp: App {
                 .ignoresSafeArea()
                 .statusBarHidden()
                 .persistentSystemOverlays(.hidden)
+        }
+        .onChange(of: scenePhase, initial: true) { _, phase in
+            // it's a screen saver, don't let the display dim and lock. The flag is ignored when set
+            // before the app is active and is reset by the system when the app leaves the foreground,
+            // so it's (re)applied on each activation. Toggling forces UIKit to re-evaluate it.
+            guard phase == .active else { return }
+            UIApplication.shared.isIdleTimerDisabled = false
+            UIApplication.shared.isIdleTimerDisabled = true
         }
     }
 }
