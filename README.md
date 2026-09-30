@@ -19,6 +19,8 @@ Supported platforms: macOS (desktop JVM), iPhone and iPad (a universal iOS app).
 * [desktopApp](./desktopApp/src/main/kotlin/com/github/seregamorph/morph3d_kmp) - desktop entry point
 * [iosApp](./iosApp) - Xcode project of the iOS app for iPhone and iPad, it embeds the `Shared` framework
   built from [shared/src/iosMain](./shared/src/iosMain/kotlin/com/github/seregamorph/morph3d_kmp)
+* [icon](./icon) - the application icon generator (a dotted torus with trails), `./icon/generate.sh`
+  regenerates the icons of the iOS and macOS apps
 
 ## Differences from the original
 

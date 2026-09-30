@@ -5,6 +5,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.BitmapPainter
+import androidx.compose.ui.graphics.toComposeImageBitmap
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.pointer.PointerEventType
@@ -19,8 +21,10 @@ import kotlinx.coroutines.delay
 import java.awt.Cursor
 import java.awt.MouseInfo
 import java.awt.Point
+import java.awt.Taskbar
 import java.awt.Toolkit
 import java.awt.image.BufferedImage
+import javax.imageio.ImageIO
 
 /**
  * Runs as a full-screen screen saver (exits on any key, mouse click or mouse move),
@@ -28,6 +32,7 @@ import java.awt.image.BufferedImage
  */
 fun main(args: Array<String>) {
     val windowed = "--window" in args || "-w" in args
+    val icon = loadIcon()
     application {
         val state = rememberWindowState(
             placement = if (windowed) WindowPlacement.Floating else WindowPlacement.Fullscreen,
@@ -37,6 +42,7 @@ fun main(args: Array<String>) {
         Window(
             onCloseRequest = ::exitApplication,
             title = "Morph3D",
+            icon = BitmapPainter(icon.toComposeImageBitmap()),
             state = state,
             onKeyEvent = {
                 if (!windowed || it.key == Key.Escape) {
@@ -61,6 +67,18 @@ fun main(args: Array<String>) {
             Morph3DScene(modifier)
         }
     }
+}
+
+/**
+ * Loads the application icon and sets it as the Dock icon, which otherwise shows the Java icon
+ * when not running from a packaged app bundle.
+ */
+private fun loadIcon(): BufferedImage {
+    val icon = object {}.javaClass.getResourceAsStream("/icon.png").use { ImageIO.read(it) }
+    if (Taskbar.isTaskbarSupported() && Taskbar.getTaskbar().isSupported(Taskbar.Feature.ICON_IMAGE)) {
+        Taskbar.getTaskbar().iconImage = icon
+    }
+    return icon
 }
 
 /**

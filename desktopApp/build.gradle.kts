@@ -23,6 +23,7 @@ compose.desktop {
             packageVersion = "1.0.0"
             macOS {
                 bundleID = "com.github.seregamorph.morph3d"
+                iconFile.set(project.file("icons/Morph3D.icns"))
             }
         }
     }
